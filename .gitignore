@@ -1,0 +1,12 @@
+# Root 
+node_modules/
+dist/
+.env
+
+# Client-specific .gitignore
+veegil-client/node_modules/
+
+# Server-specific .gitignore
+veegil-server/node_modules/
+
+veegil-server/.env
