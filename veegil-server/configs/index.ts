@@ -28,7 +28,7 @@ export default () => ({
   },
   cors: {
     origin: process.env.CORS_ORIGIN || '*',
-    methods: process.env.CORS_METHODS || 'GET,HEAD',
+    methods: process.env.CORS_METHODS || 'GET,HEAD,PUT,PATCH,POST,DELETE',
     headers: process.env.CORS_HEADERS || '*',
   },
   paystack: {
