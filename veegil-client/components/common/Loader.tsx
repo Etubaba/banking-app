@@ -1,6 +1,6 @@
 import React from "react";
 
-export const Loader = (): JSX.Element => {
+const Loader = (): JSX.Element => {
   return (
     <div className="flex space-x-3">
       {/* <p className="animate-pulse">Loading...</p> */}
@@ -23,3 +23,4 @@ export const Loader = (): JSX.Element => {
     </div>
   );
 };
+export default Loader;

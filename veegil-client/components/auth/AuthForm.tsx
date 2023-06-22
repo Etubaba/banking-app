@@ -4,20 +4,28 @@ import React, { useState } from "react";
 import Button from "../common/Button";
 import { BASE_URL } from "@/constant";
 import { useForm } from "react-hook-form";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
+import { setCookie } from "cookies-next";
 import axios from "axios";
+import { useAuthStore, useStore } from "@/store";
+import BackDrop from "../common/BackDrop";
 
 const AuthForm = ({ login }: { login: boolean }) => {
   const [loading, setLoading] = useState(false);
+  const [drop, setDrop] = useState(false);
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
+  const router = useRouter();
+  const authenticateUser = useStore((state) => state.authenticateUser);
+  const handleAuth = useAuthStore((state) => state.handleAuth);
+
+  // const saveUserDetails = useStore((state) => state.authenticateUser);
 
   async function auth(data: any) {
     setLoading(true);
-    console.log(data);
     if (login) {
       try {
         const formdata = {
@@ -30,7 +38,14 @@ const AuthForm = ({ login }: { login: boolean }) => {
         );
         if (resData) {
           setLoading(false);
-          redirect("/user");
+          authenticateUser(resData?.user);
+          handleAuth(true);
+          setCookie("_er3434", resData.accessToken, { maxAge: 60 * 60 * 60 });
+          setCookie("_t4t5wm", resData.refreshToken, {
+            maxAge: 60 * 60 * 60 * 31,
+          });
+          setDrop(true);
+          router.push("/user");
         }
       } catch (err) {
         setLoading(false);
@@ -50,7 +65,7 @@ const AuthForm = ({ login }: { login: boolean }) => {
         );
         if (resData) {
           setLoading(false);
-          redirect("/user");
+          router.push("/auth/login");
         }
       } catch (err) {
         setLoading(false);
@@ -59,7 +74,8 @@ const AuthForm = ({ login }: { login: boolean }) => {
     }
   }
 
-  const handleLogin = async () => {};
+  if (drop) return <BackDrop />;
+
   return (
     <div className="bg-white shadow-lg animate__fadeIn animate__animated rounded-md w-full md:w-[500px] p-7">
       <p className="text-center text-lg text-[#1e202a] font-semibold">
@@ -68,6 +84,7 @@ const AuthForm = ({ login }: { login: boolean }) => {
       <p className="text-center text-sm text-[#7c7f8a] mb-5">
         Provide your credentials
       </p>
+
       <form onSubmit={handleSubmit(auth)}>
         <div className=" grid gap-2 grid-cols-1 w-full mb-4   ">
           {!login && (
@@ -142,7 +159,9 @@ const AuthForm = ({ login }: { login: boolean }) => {
             </label>
             <input
               id="password"
-              {...register("password", { required: "THis field is required" })}
+              {...register("password", {
+                required: "THis field is required",
+              })}
               type={"text"}
               className="border w-full p-2 form-control rounded-md focus:border-orange focus:outline-none focus:ring-1 focus:ring-orange focus:ring-opacity-5"
               // placeholder={"First Name"}
@@ -154,7 +173,6 @@ const AuthForm = ({ login }: { login: boolean }) => {
             )}
           </div>
         </div>
-        {/* <button type="submit">Submit</button> */}
 
         <Button
           loading={loading}

@@ -27,3 +27,57 @@
   opacity: 0;
 }
 
+
+.spinner {
+  --d: 18.6px;
+  width: 2.5px;
+  height: 2.5px;
+  border-radius: 50%;
+  color: #F24726;
+  box-shadow: calc(1*var(--d)) calc(0*var(--d)) 0 0,
+    calc(0.707*var(--d)) calc(0.707*var(--d)) 0 1.1px,
+    calc(0*var(--d)) calc(1*var(--d)) 0 2.2px,
+    calc(-0.707*var(--d)) calc(0.707*var(--d)) 0 3.4px,
+    calc(-1*var(--d)) calc(0*var(--d)) 0 4.5px,
+    calc(-0.707*var(--d)) calc(-0.707*var(--d))0 5.6px,
+    calc(0*var(--d)) calc(-1*var(--d)) 0 6.7px;
+  animation: spinner-a90wxe 1s infinite steps(8);
+}
+
+@keyframes spinner-a90wxe {
+  100% {
+    transform: rotate(1turn);
+  }
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+}
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px rgb(255, 255, 255);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb {
+  background: rgb(228, 228, 228);
+  border-radius: 10px;
+  height: 10px;
+}
+#payment,
+iframe html::-webkit-scrollbar-thumb {
+  background: rgb(255, 255, 255);
+  border-radius: 10px;
+}
+
+#payment,
+iframe html::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px rgb(255, 255, 255);
+  border-radius: 10px;
+}
+
+
+
+
+
+
+
+
