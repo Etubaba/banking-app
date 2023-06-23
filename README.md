@@ -233,13 +233,15 @@ The REST API to the this app is described below.
 "transaction_history":[]
 }
 
-#Front End
+# Front End
 
 ## Getting Started
 
-First, run the development server:
+First,install run the development server:
 
 ```bash
+npm install
+
 npm run dev
 ```
 
