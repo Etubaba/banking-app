@@ -104,7 +104,7 @@ const AmountModal = ({ open, onClose, type }: ModalProps) => {
 
           <input
             onChange={(e) => setAmount(e.target.value)}
-            type="text"
+            type="number"
             className="border w-full p-2 form-control rounded-md focus:border-orange focus:outline-none focus:ring-1 focus:ring-orange focus:ring-opacity-5"
           />
         </div>
