@@ -5,9 +5,7 @@ import { BASE_URL } from "@/constant";
 import { validateToken } from "@/helper/validateToken";
 import { MdOutlineAccountBalanceWallet } from "react-icons/md";
 import { HiOutlineCash } from "react-icons/hi";
-import Transaction from "@/components/user/Transaction";
-import EmptyState from "@/components/common/EmptyState";
-import RecordList from "@/components/user/RecordList";
+import { Transaction, EmptyState, RecordList } from "@/components";
 
 const page = async () => {
   const cookieStore = cookies();

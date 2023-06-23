@@ -65,7 +65,7 @@ $ yarn test <test-file-name>
 ## API BASE_URL
 
 ```bash
- $ https://veegil-media-assessment.onrender.com/
+ $ https://veegil-media-assessment.onrender.com/api/v1
 ```
 
 # REST API
