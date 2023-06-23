@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import Toggle from "./Toggle";
+import Link from "next/link";
 
 const MobileNav = (): JSX.Element => {
   const [checked, setChecked] = useState(false);
@@ -10,10 +11,12 @@ const MobileNav = (): JSX.Element => {
       <div
         className={`md:hidden bg-white z-[1000]  w-full flex justify-between items-center px-6 py-3`}
       >
-        <span className="flex text-sm">
-          <h2 className="text-primary font-semibold">Find</h2>
-          <h2 className="text-orange font-semibold">Prosper</h2>
-        </span>
+        <Link href={"/"}>
+          <span className="flex text-sm">
+            <h2 className="text-primary font-semibold">Find</h2>
+            <h2 className="text-orange font-semibold">Prosper</h2>
+          </span>
+        </Link>
         <Toggle yes={checked} setChecked={setChecked} />
       </div>
       {checked && (
@@ -30,7 +33,9 @@ const MobileNav = (): JSX.Element => {
             }}
             className="hover:bg-[#1B242F]/30 text-white py-3 w-full rounded-md"
           >
-            <a href="#project">Login</a>
+            <Link href={"/auth/login"}>
+              <p>Login</p>
+            </Link>
           </p>
           <p
             onClick={() => {
@@ -38,7 +43,10 @@ const MobileNav = (): JSX.Element => {
             }}
             className="hover:bg-[#1B242F]/30 text-white py-3 w-full rounded-md"
           >
-            <a href="#blog">Register</a>
+            <Link href={"/auth/register"}>
+              {" "}
+              <p>Register</p>
+            </Link>
           </p>
         </div>
       )}

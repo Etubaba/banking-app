@@ -14,7 +14,7 @@ export const details = [
   {
     title: "Sign In",
     content:
-      "Ensure u sign in to get the best experience, click on the login button ",
+      "Ensure you sign in to get the best experience, click on the login button ",
 
     Icon: AiOutlineLogin,
   },
