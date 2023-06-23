@@ -20,7 +20,7 @@ $ password : 12345
 
 ## Guide and Instruction
 
-Website URL : <a href='https://veegil-media-assessment-b5t83v87w-veegil.vercel.app/'>https://veegil-media-assessment-b5t83v87w-veegil.vercel.app/</a>
+Website URL : [https://veegil-media-assessment-b5t83v87w-veegil.vercel.app/](https://veegil-media-assessment-b5t83v87w-veegil.vercel.app/)
 
 The index page is the home page, click on register button on the page header to create an account, after registration is complete it will authomatically take the user to the login page, user is expected to login , and have access to his dashboard where user can add money by clicking on the add money button or withdraw money by clicking on the withdraw money button.
 
