@@ -4,11 +4,9 @@
 
 This application is a modern banking app powered by Nest JS and MongoDB on the backend (server and database respectively), and the latest version of NextJS on the frontend. It offers user signup and login functionalities with secure authentication using JWT. Users can credit their wallets using Paystack, withdraw money, and view their transaction history. It provides a seamless and secure banking experience, combining advanced technologies to ensure optimal performance and data security.
 
-## Note
 
-The backend was hosted on render, and due to it is hosted on a free tier, the APIs might take 1-2mins to be ready on the first hit of the api endpoints (This is so because of the time for the app to spine up after it is short down 15mins of app inactivity), so expect a loading for 1-2mins on the first call of any endpoint.
 
-## user created for assessment purposes
+## user created for testing
 
 ```bash
 $ phone : 09042528770
