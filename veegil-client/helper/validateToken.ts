@@ -3,10 +3,8 @@ import { BASE_URL } from "@/constant";
 import { redirect } from "next/navigation";
 import { setCookie, getCookie } from "cookies-next";
 
-export const validateToken = async () => {
+export const validateToken = async (token: string) => {
   try {
-    const token = getCookie("_t4t5wm");
-
     const response = await fetch(BASE_URL + "auth/refresh", {
       method: "POST",
       headers: {
@@ -14,8 +12,10 @@ export const validateToken = async () => {
       },
       body: JSON.stringify({ refreshToken: token }),
     });
+    // console.log(response);
     const data = await response.json();
-    if (data.ok) {
+
+    if (data.user) {
       setCookie("_t4t5wm", data.refreshToken, {
         secure: true,
         maxAge: 60 * 60 * 24 * 7,
@@ -25,9 +25,13 @@ export const validateToken = async () => {
         maxAge: 60 * 60 * 24 * 7,
       });
 
-      redirect("/user");
+      return { isValid: true };
+
+      // redirect("/user");
     }
-  } catch (err) {
-    redirect("/auth/login");
+    return { isValid: false };
+  } catch (err: any) {
+    console.log("err", err.message);
+    return { isValid: false };
   }
 };

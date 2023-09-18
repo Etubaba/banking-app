@@ -45,7 +45,9 @@ const AuthForm = ({ login }: { login: boolean }) => {
             maxAge: 60 * 60 * 60 * 31,
           });
           setDrop(true);
-          router.push("/user");
+          resData.user.role.includes("admin")
+            ? router.push("/admin")
+            : router.push("/user");
         }
       } catch (err) {
         setLoading(false);
@@ -73,6 +75,8 @@ const AuthForm = ({ login }: { login: boolean }) => {
       }
     }
   }
+
+  if (drop) setTimeout(() => setDrop(false), 4000);
 
   if (drop) return <BackDrop />;
 

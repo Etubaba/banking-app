@@ -62,6 +62,11 @@ export type RecordType = {
   updated_at: string;
   beneficial_id: string;
 };
+
+export type SideNavType = {
+  show?: boolean;
+  setShow?: React.Dispatch<React.SetStateAction<boolean>>;
+};
 enum type {
   credit = "credit",
   debit = "debit",

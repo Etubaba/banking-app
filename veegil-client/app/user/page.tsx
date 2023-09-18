@@ -2,7 +2,7 @@ import React from "react";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { BASE_URL } from "@/constant";
-import { validateToken } from "@/helper/validateToken";
+
 import { MdOutlineAccountBalanceWallet } from "react-icons/md";
 import { HiOutlineCash } from "react-icons/hi";
 import { Transaction, EmptyState, RecordList } from "@/components";
@@ -12,7 +12,6 @@ const page = async () => {
   const cookie = cookieStore.get("_er3434");
   const token = cookie?.value;
 
-  if (cookie === undefined) return redirect("/auth/login");
   const res = await fetch(`${BASE_URL}user/profile`, {
     headers: {
       "Content-Type": "application/json",
@@ -20,11 +19,9 @@ const page = async () => {
     },
   });
   const data = await res.json();
-  if (data.statusCode !== undefined && data.statusCode === 401)
-    return validateToken();
 
   return (
-    <div className=" px-5 py-8 md:py-16 md:px-30 lg:px-60">
+    <div className=" px-2 py-8 ">
       <div className="flex mb-8 space-y-3 md:space-y-0  md:flex-row flex-col md:items-center md:justify-between">
         <div>
           <div className="flex space-x-2 ">

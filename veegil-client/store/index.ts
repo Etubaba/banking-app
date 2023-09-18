@@ -38,7 +38,7 @@ const modalStore = (set: any) => ({
 
 const store = (set: any) => ({
   user: null,
-  authenticateUser: (user: userProps) => {
+  authenticateUser: (user: userProps | null) => {
     // Your authentication logic here
     set({ user });
   },
