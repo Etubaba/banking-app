@@ -5,8 +5,11 @@ dist/
 
 # Client-specific .gitignore
 veegil-client/node_modules/
+veegil-client/.git/
 
 # Server-specific .gitignore
 veegil-server/node_modules/
 
 veegil-server/.env
+
+veegil-server/.git/

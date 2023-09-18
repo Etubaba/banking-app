@@ -41,7 +41,7 @@ export class AuthService {
   }
 
   async registerUser(userDto: RegisterDto): Promise<object> {
-    const { phone, email, full_name, password } = userDto;
+    const { phone, email, full_name, password, role } = userDto;
     //check if the user already exist
     const userExist = await this.prismaService.user.findUnique({
       where: {
@@ -56,9 +56,17 @@ export class AuthService {
     //hash user password
     const hashedPassword = await this.passwordHash.hash(password);
 
+    const specifyRole = role === 'admin' ? 'admin' : 'user';
+
     //create user
     const user = await this.prismaService.user.create({
-      data: { phone, full_name, email, password: hashedPassword },
+      data: {
+        phone,
+        full_name,
+        email,
+        password: hashedPassword,
+        role: [specifyRole],
+      },
     });
 
     //generate token

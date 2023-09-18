@@ -9,7 +9,7 @@ const MobileNav = (): JSX.Element => {
   return (
     <>
       <div
-        className={`md:hidden bg-white z-[1000]  w-full flex justify-between items-center px-6 py-3`}
+        className={`md:hidden  bg-white z-[1000]  w-full flex justify-between items-center px-6 py-3`}
       >
         <Link href={"/"}>
           <span className="flex text-sm">
@@ -21,7 +21,7 @@ const MobileNav = (): JSX.Element => {
       </div>
       {checked && (
         <div
-          className={`w-full sticky top-12  z-[900] flex flex-col text-center h-auto justify-center space-y-4 items-center bg-[#1B242F]`}
+          className={`w-full sticky top-12  z-[900] flex flex-col text-center h-auto justify-center  space-y-2 items-center bg-[#1B242F]`}
         >
           <p
             onClick={() => {

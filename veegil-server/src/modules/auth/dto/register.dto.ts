@@ -20,4 +20,7 @@ export class RegisterDto {
   @IsNotEmpty()
   @Transform(({ value }) => String(value))
   password: string;
+
+  @IsNotEmpty()
+  role: string;
 }

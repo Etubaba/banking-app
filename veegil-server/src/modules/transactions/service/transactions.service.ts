@@ -8,6 +8,8 @@ import configuration from '../../../../configs';
 import { Response } from 'express';
 import * as fs from 'fs';
 import * as path from 'path';
+import { TransferDto } from '../dto/transferDto.dto';
+import { DonateDto } from '../dto/donate.dto';
 
 @Injectable()
 export class TransactionsService {
@@ -42,9 +44,6 @@ export class TransactionsService {
         account_balance: newAmount,
       },
     });
-
-    //call helper function that calls third party that credits the user directly but since this was
-    //wasn't required in this assessment it is just a dummy action
 
     // create record for this transaction
 
@@ -146,5 +145,149 @@ export class TransactionsService {
     } catch (err) {
       //   console.log(err.response.data);
     }
+  }
+
+  async transferFunds(transferDto: TransferDto, phone: string) {
+    const { amount: rawAmount, target_acct } = transferDto;
+    //convert to positive int
+    const amount = Math.abs(rawAmount);
+
+    //does user exist
+    const userGiver = await this.prismaService.user.findUnique({
+      where: {
+        phone,
+      },
+    });
+
+    if (!userGiver)
+      return {
+        status: false,
+        message: 'User does not exists',
+      };
+
+    //does beneficial exist
+    const beneficial = await this.prismaService.user.findUnique({
+      where: {
+        phone: target_acct,
+      },
+    });
+
+    if (!beneficial)
+      return {
+        status: false,
+        message: 'Beneficial user does not exists',
+      };
+
+    //check for acct balance
+
+    if (userGiver.account_balance < amount) {
+      return {
+        status: false,
+        message: 'Insufficient balance ',
+      };
+    }
+
+    //minus the amount from userGiver
+
+    await this.prismaService.user.update({
+      where: {
+        phone,
+      },
+      data: {
+        account_balance: userGiver.account_balance - amount,
+      },
+    });
+
+    //credit beneficial
+
+    await this.prismaService.user.update({
+      where: {
+        phone,
+      },
+      data: {
+        account_balance: beneficial.account_balance + amount,
+      },
+    });
+
+    return {
+      status: true,
+      message: 'Transaction completed successfully',
+      beneficial: beneficial.full_name,
+      amount: amount,
+    };
+  }
+
+  async donateFunds(donateDto: DonateDto, phone: string) {
+    const { amount: rawAmount, reason } = donateDto;
+    //convert to positive int
+    const amount = Math.abs(rawAmount);
+
+    //does user exist
+    const userGiver = await this.prismaService.user.findUnique({
+      where: {
+        phone,
+      },
+    });
+
+    if (!userGiver)
+      return {
+        status: false,
+        message: 'User does not exists',
+      };
+
+    //check for acct balance
+
+    if (userGiver.account_balance < amount) {
+      return {
+        status: false,
+        message: 'Insufficient balance ',
+      };
+    }
+
+    //minus the amount from userGiver
+
+    await this.prismaService.user.update({
+      where: {
+        phone,
+      },
+      data: {
+        account_balance: userGiver.account_balance - amount,
+      },
+    });
+
+    return {
+      status: true,
+      message: `Donted ${amount} for ${reason} successfully.Thank you`,
+    };
+  }
+
+  async transactionRecord() {
+    const transactions = await this.prismaService.transaction_history.findMany(
+      {},
+    );
+    return { status: true, data: transactions };
+  }
+
+  async statistics() {
+    const users = await this.prismaService.user.count();
+
+    const transactions = await this.prismaService.transaction_history.count();
+
+    const allTransaction =
+      await this.prismaService.transaction_history.findMany({});
+
+    const totalAmountInTransaction = allTransaction.reduce(
+      (accumulator, currentValue) => {
+        return accumulator + currentValue.amount;
+      },
+      0,
+    );
+
+    return {
+      status: true,
+      total_users: users,
+      total_transactions: transactions,
+      amount_in_transaction: totalAmountInTransaction,
+    };
   }
 }

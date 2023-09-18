@@ -17,7 +17,16 @@ model user {
   email               String?               @unique
   account_balance     Int                   @default(0)
   password            String
+  created_at          DateTime              @default(now())
+  updated_at          DateTime              @updatedAt
+  role                role[]
+  avatar              String?
   transaction_history transaction_history[]
+}
+
+enum role {
+  admin
+  user
 }
 
 model transaction_history {

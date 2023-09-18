@@ -5,7 +5,6 @@ import { setCookie, getCookie } from "cookies-next";
 
 export const validateToken = async () => {
   try {
-    // const cookieStore = cookies();
     const token = getCookie("_t4t5wm");
 
     const response = await fetch(BASE_URL + "auth/refresh", {

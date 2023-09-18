@@ -12,6 +12,8 @@ import configs from '../configs';
 import { HttpModule } from '@nestjs/axios';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
+import { APP_GUARD } from '@nestjs/core';
+import { RolesGuard } from './common/guard/roles.guard';
 
 @Module({
   imports: [
@@ -27,6 +29,13 @@ import { join } from 'path';
     PaystackModule,
   ],
   controllers: [AppController],
-  providers: [AppService, PaystackService],
+  providers: [
+    AppService,
+    PaystackService,
+    {
+      provide: APP_GUARD,
+      useClass: RolesGuard,
+    },
+  ],
 })
 export class AppModule {}
