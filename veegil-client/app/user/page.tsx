@@ -6,10 +6,11 @@ import { BASE_URL } from "@/constant";
 import { MdOutlineAccountBalanceWallet } from "react-icons/md";
 import { HiOutlineCash } from "react-icons/hi";
 import { Transaction, EmptyState, RecordList } from "@/components";
+import TransferButton from "@/components/user/TransferButton";
 
 const page = async () => {
   const cookieStore = cookies();
-  const cookie = cookieStore.get("_er3434");
+  const cookie = cookieStore.get("_t4t5wm");
   const token = cookie?.value;
 
   const res = await fetch(`${BASE_URL}user/profile`, {
@@ -43,8 +44,11 @@ const page = async () => {
         </div>
         <Transaction />
       </div>
+      <div className="flex justify-between items-center">
+        <p className="text-dark font-semibold mb-6 text">Transaction History</p>
+        <TransferButton />
+      </div>
 
-      <p className="text-dark font-semibold mb-6 text">Transaction History</p>
       <div className="md:mb-7">
         {data.transaction_history.length === 0 ? (
           <EmptyState

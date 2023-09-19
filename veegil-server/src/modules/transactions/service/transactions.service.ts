@@ -209,6 +209,17 @@ export class TransactionsService {
       },
     });
 
+    // records
+    await this.prismaService.transaction_history.create({
+      data: {
+        amount: amount,
+        transaction_type: 'debit',
+        beneficial_id: beneficial.id,
+        sender_id: userGiver.id,
+        sender_name: userGiver.full_name,
+      },
+    });
+
     return {
       status: true,
       message: 'Transaction completed successfully',
@@ -252,6 +263,17 @@ export class TransactionsService {
       },
       data: {
         account_balance: userGiver.account_balance - amount,
+      },
+    });
+
+    // records
+    await this.prismaService.transaction_history.create({
+      data: {
+        amount: amount,
+        transaction_type: 'debit',
+        beneficial_id: userGiver.id,
+        sender_id: userGiver.id,
+        sender_name: reason,
       },
     });
 

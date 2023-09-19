@@ -7,8 +7,8 @@ import Footer from "@/components/footer/Footer";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "FindProsper",
-  description: "Veegil media assessment for Banking App features",
+  title: "ZinnyWallet",
+  description: "Zinnywallet is an online Banking App",
 };
 
 export default function RootLayout({

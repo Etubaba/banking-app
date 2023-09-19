@@ -25,7 +25,9 @@ export const validateToken = async (token: string) => {
         maxAge: 60 * 60 * 24 * 7,
       });
 
-      return { isValid: true };
+      const role = data.user.role.includes("admin") ? "admin" : "user";
+
+      return { isValid: true, role };
 
       // redirect("/user");
     }

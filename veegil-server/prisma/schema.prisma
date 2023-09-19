@@ -39,6 +39,7 @@ model transaction_history {
   sender_id        String?  @db.ObjectId
   sender_name      String?
   beneficial_id    String   @db.ObjectId
+  userId           String   @db.ObjectId
 }
 
 model transaction_reference {

@@ -10,7 +10,7 @@ export async function middleware(request: NextRequest, response: NextResponse) {
 
   const loginPath = pathname.startsWith("/auth");
   if (pathname.includes("/admin")) {
-    if (!serviceRes?.isValid) {
+    if (!serviceRes?.isValid && serviceRes.role === "user") {
       return NextResponse.redirect(new URL("/auth/login", request.url));
     }
   }

@@ -12,6 +12,7 @@ import BackDrop from "../common/BackDrop";
 
 const AuthForm = ({ login }: { login: boolean }) => {
   const [loading, setLoading] = useState(false);
+  const [errMsg, setErrorMsg] = useState("");
   const [drop, setDrop] = useState(false);
   const {
     register,
@@ -36,21 +37,30 @@ const AuthForm = ({ login }: { login: boolean }) => {
           `${BASE_URL}auth/login`,
           formdata
         );
+
         if (resData) {
           setLoading(false);
           authenticateUser(resData?.user);
           handleAuth(true);
-          setCookie("_er3434", resData.accessToken, { maxAge: 60 * 60 * 60 });
+          setCookie("_er3434", resData.accessToken, {
+            maxAge: 60 * 60 * 60 * 2,
+          });
           setCookie("_t4t5wm", resData.refreshToken, {
             maxAge: 60 * 60 * 60 * 31,
           });
           setDrop(true);
+          router.push("/user");
           resData.user.role.includes("admin")
             ? router.push("/admin")
             : router.push("/user");
+
+          setDrop(true);
         }
-      } catch (err) {
+      } catch (err: any) {
         setLoading(false);
+        if (err.response) {
+          setErrorMsg(err.response.data.message);
+        }
         console.log(err);
       }
     } else {
@@ -69,9 +79,12 @@ const AuthForm = ({ login }: { login: boolean }) => {
           setLoading(false);
           router.push("/auth/login");
         }
-      } catch (err) {
+      } catch (err: any) {
         setLoading(false);
         console.log(err);
+        if (err.response) {
+          setErrorMsg(err.response.data.message);
+        }
       }
     }
   }
@@ -183,6 +196,8 @@ const AuthForm = ({ login }: { login: boolean }) => {
           type="submit"
           text={login ? "Login" : "Register"}
         />
+
+        {errMsg !== "" && <p className="text-red-700 text-xs">{errMsg}</p>}
       </form>
     </div>
   );

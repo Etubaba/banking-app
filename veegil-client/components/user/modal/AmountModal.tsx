@@ -14,11 +14,14 @@ import { validateToken } from "@/helper/validateToken";
 
 const AmountModal = ({ open, onClose, type }: ModalProps) => {
   const [amount, setAmount] = useState("");
+  const [password, setPassword] = useState("");
+  const [destination, setDestination] = useState("");
   const [loading, setLoading] = useState(false);
 
   const successModal = useModal((state) => state.handleSuccess);
   const amountModal = useModal((state) => state.handleAmount);
   const responseType = useModal((state) => state.handleMessage);
+
   const errorMsg = useModal((state) => state.handleErrorMsg);
   const setUrl = useModal((state) => state.setUrl);
   const handlePayment = useModal((state) => state.handlePayment);
@@ -62,12 +65,10 @@ const AmountModal = ({ open, onClose, type }: ModalProps) => {
       if (err.response) {
         errorMsg(err.response.data.message);
       } else errorMsg(err.message);
-      if (err.response.data.statusCode === 401) await validateToken();
     }
   };
 
   const addFunds = async () => {
-    setLoading(true);
     try {
       const token = getCookie("_er3434");
       axios.defaults.headers.common["Authorization"] = "Bearer " + token;
@@ -88,15 +89,78 @@ const AmountModal = ({ open, onClose, type }: ModalProps) => {
       if (err.response) {
         errorMsg(err.response.data.message);
       } else errorMsg(err.message);
-      if (err.response.data.statusCode === 401) await validateToken();
     }
   };
+
+  const transferMoney = async () => {
+    try {
+      const token = getCookie("_er3434");
+      axios.defaults.headers.common["Authorization"] = "Bearer " + token;
+      axios.defaults.headers.get["Content-Type"] = "application/json";
+      const { data } = await axios.post(`${BASE_URL}transaction/transfer`, {
+        amount: +amount,
+        target_acct: destination,
+      });
+
+      if (data) {
+        refreshServer();
+        amountModal(false);
+        successModal(true);
+        responseType("success");
+        setLoading(false);
+      }
+    } catch (err: any) {
+      responseType("error");
+      if (err.response) {
+        errorMsg(err.response.data.message);
+      } else errorMsg(err.message);
+    }
+  };
+
+  const validateUser = async () => {
+    setLoading(true);
+    try {
+      const formdata = {
+        password,
+        phone: user.phone,
+      };
+      const { data: resData } = await axios.post(
+        `${BASE_URL}auth/login`,
+        formdata
+      );
+
+      if (resData) {
+        if (type == "withdraw") {
+          withdrawFunds();
+        } else if (type == "fund") {
+          addFunds();
+        } else if (type === "transfer") {
+          transferMoney();
+        }
+      }
+    } catch (err: any) {
+      errorMsg(err.response.data.message);
+    }
+  };
+
+  const disable =
+    type !== "transfer"
+      ? amount === "" || password === ""
+        ? true
+        : false
+      : amount === "" || password === "" || destination === ""
+      ? true
+      : false;
 
   return (
     <Modal open={open} onClose={onClose}>
       <div className="md:w-[24rem]  h-auto">
         <p className=" text-center font-semibold md:text-left ">
-          {type == "withdraw" ? "Withraw Fund" : "Add Fund"}
+          {type == "withdraw"
+            ? "Withraw Fund"
+            : type === "fund"
+            ? "Add Fund"
+            : "Transfer"}
         </p>
         <div className="border-b my-4" />
         <div className="flex flex-col space-y-4">
@@ -108,6 +172,26 @@ const AmountModal = ({ open, onClose, type }: ModalProps) => {
             className="border w-full p-2 form-control rounded-md focus:border-orange focus:outline-none focus:ring-1 focus:ring-orange focus:ring-opacity-5"
           />
         </div>
+
+        {type === "transfer" && (
+          <div className="flex flex-col space-y-4 mt-2">
+            <p className="text-sm text-textColor">Destination Account</p>
+            <input
+              onChange={(e) => setDestination(e.target.value)}
+              type="number"
+              className="border w-full p-2 form-control rounded-md focus:border-orange focus:outline-none focus:ring-1 focus:ring-orange focus:ring-opacity-5"
+            />
+          </div>
+        )}
+
+        <div className="flex flex-col space-y-4 mt-2">
+          <p className="text-sm text-textColor">Enter Pin</p>
+          <input
+            onChange={(e) => setPassword(e.target.value)}
+            type="password"
+            className="border w-full p-2 form-control rounded-md focus:border-orange focus:outline-none focus:ring-1 focus:ring-orange focus:ring-opacity-5"
+          />
+        </div>
         <div className="flex justify-between  mt-4">
           <button
             onClick={onClose}
@@ -116,11 +200,17 @@ const AmountModal = ({ open, onClose, type }: ModalProps) => {
             Cancel
           </button>
           <Button
-            disable={amount === "" ? true : false}
+            disable={disable}
             loading={loading}
             type="custom"
-            onClick={type === "withdraw" ? withdrawFunds : addFunds}
-            text={type === "withdraw" ? "Withdraw" : "Add Fund"}
+            onClick={validateUser}
+            text={
+              type === "withdraw"
+                ? "Withdraw"
+                : type === "fund"
+                ? "Add Fund"
+                : "Transfer"
+            }
           />
         </div>
       </div>
