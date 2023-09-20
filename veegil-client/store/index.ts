@@ -12,10 +12,15 @@ const authStore = (set: any) => ({
 const modalStore = (set: any) => ({
   amountModal: false,
   successModal: false,
+  typeAmount: "withdraw",
   responseType: "success",
   errorMsg: "",
   paymentUrl: "",
   paymentModal: false,
+
+  handleType: (type: string) => {
+    set({ typeAmount: type });
+  },
   handleErrorMsg: (load: string) => {
     set({ errorMsg: load });
   },

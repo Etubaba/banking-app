@@ -121,6 +121,7 @@ export class TransactionsService {
             amount: +data?.data?.amount,
             transaction_type: 'credit',
             beneficial_id: user.id,
+            sender_name: `Funded my wallet`,
           },
         });
         try {
@@ -198,25 +199,37 @@ export class TransactionsService {
       },
     });
 
-    //credit beneficial
+    //credit user beneficial
 
     await this.prismaService.user.update({
       where: {
-        phone,
+        phone: beneficial.phone,
       },
       data: {
         account_balance: beneficial.account_balance + amount,
       },
     });
 
-    // records
+    // beneficial records
+    await this.prismaService.transaction_history.create({
+      data: {
+        amount: amount,
+        transaction_type: 'credit',
+        beneficial_id: beneficial.id,
+        sender_id: userGiver.id,
+        sender_name: `Credit from ${userGiver.full_name}`,
+      },
+    });
+
+    //giver records
+
     await this.prismaService.transaction_history.create({
       data: {
         amount: amount,
         transaction_type: 'debit',
-        beneficial_id: beneficial.id,
+        beneficial_id: userGiver.id,
         sender_id: userGiver.id,
-        sender_name: userGiver.full_name,
+        sender_name: `Transfer to ${beneficial.full_name}`,
       },
     });
 

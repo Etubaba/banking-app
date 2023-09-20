@@ -9,7 +9,7 @@ import PayStackModal from "./modal/PayStackModal";
 import { usePathname, useRouter } from "next/navigation";
 
 const Transaction = () => {
-  const [typeAmount, setTypeAmount] = useState("withdraw");
+  //const [typeAmount, setTypeAmount] = useState("withdraw");
   const amountModal = useModal((state) => state.amountModal);
   const successModal = useModal((state) => state.successModal);
   const handlePayment = useModal((state) => state.handlePayment);
@@ -17,6 +17,9 @@ const Transaction = () => {
   const responseType = useModal((state) => state.responseType);
   const handleAmountModal = useModal((state) => state.handleAmount);
   const handleSuccessModal = useModal((state) => state.handleSuccess);
+
+  const typeAmount = useModal((state) => state.typeAmount);
+  const setTypeAmount = useModal((state) => state.handleType);
   const path = usePathname();
   const router = useRouter();
 

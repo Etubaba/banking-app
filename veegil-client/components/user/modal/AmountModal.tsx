@@ -17,6 +17,7 @@ const AmountModal = ({ open, onClose, type }: ModalProps) => {
   const [password, setPassword] = useState("");
   const [destination, setDestination] = useState("");
   const [loading, setLoading] = useState(false);
+  const [errMsg, setErrMsg] = useState();
 
   const successModal = useModal((state) => state.handleSuccess);
   const amountModal = useModal((state) => state.handleAmount);
@@ -139,6 +140,8 @@ const AmountModal = ({ open, onClose, type }: ModalProps) => {
         }
       }
     } catch (err: any) {
+      setLoading(false);
+      setErrMsg(err.response.data.message);
       errorMsg(err.response.data.message);
     }
   };
@@ -213,6 +216,7 @@ const AmountModal = ({ open, onClose, type }: ModalProps) => {
             }
           />
         </div>
+        {errMsg !== "" && <p className="text-red-700 my-2">{errMsg}</p>}
       </div>
     </Modal>
   );
