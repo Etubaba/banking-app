@@ -52,6 +52,7 @@ export class TransactionsService {
         amount: amount,
         transaction_type: 'debit',
         beneficial_id: user.id,
+        sender_name: 'Withdraw to bank account',
       },
     });
 
