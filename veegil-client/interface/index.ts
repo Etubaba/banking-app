@@ -100,3 +100,11 @@ export type selectType = {
   // style?: string;
   position?: string;
 };
+
+export type dasboardCompo = {
+  title: string;
+  Icon: IconType;
+  value: string | number;
+  color?: string;
+  link?: string;
+};

@@ -49,7 +49,7 @@ const AuthForm = ({ login }: { login: boolean }) => {
             maxAge: 60 * 60 * 60 * 31,
           });
           setDrop(true);
-          router.push("/user");
+
           resData.user.role.includes("admin")
             ? router.push("/admin")
             : router.push("/user");
