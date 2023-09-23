@@ -15,6 +15,7 @@ import { WithdrawFundsDto } from '../dto/withdrawfund.dto';
 import { Response, Request } from 'express';
 import { TransferDto } from '../dto/transferDto.dto';
 import { DonateDto } from '../dto/donate.dto';
+import { BillDto } from '../dto/billsDto';
 
 @Controller('transaction')
 export class TransactionsController {
@@ -75,5 +76,11 @@ export class TransactionsController {
   async donate(@Req() request, @Body() donateDto: DonateDto) {
     const { id }: { phone: string; id: string } = request.user;
     return await this.transactionsService.donateFunds(donateDto, id);
+  }
+  @UseGuards(JwtGuard)
+  @Post('/pay/bill')
+  async payBill(@Req() request, @Body() billDto: BillDto) {
+    const { id }: { phone: string; id: string } = request.user;
+    return await this.transactionsService.payBills(billDto, id);
   }
 }

@@ -10,6 +10,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { TransferDto } from '../dto/transferDto.dto';
 import { DonateDto } from '../dto/donate.dto';
+import { BillDto } from '../dto/billsDto';
 
 @Injectable()
 export class TransactionsService {
@@ -312,6 +313,68 @@ export class TransactionsService {
       status: true,
       message: `Donted ${amount} to ${organization}  successfully.Thank you`,
     };
+  }
+
+  async payBills(billDto: BillDto, id: string) {
+    const {
+      amount: rawAmount,
+      bill_type,
+      provider,
+      tvPackage,
+      user_credit_id,
+    } = billDto;
+
+    const amount = Math.abs(rawAmount);
+
+    const user = await this.prismaService.user.findUnique({
+      where: {
+        id,
+      },
+    });
+
+    //check for acct balance
+
+    if (user.account_balance < amount) {
+      return {
+        status: false,
+        message: 'Insufficient balance ',
+      };
+    }
+
+    await this.prismaService.user.update({
+      where: {
+        id,
+      },
+      data: {
+        account_balance: user.account_balance - amount,
+      },
+    });
+
+    // perform required purchase here
+
+    //end purchase here
+
+    const message =
+      bill_type === 'Air Time'
+        ? 'Purchased air time'
+        : bill_type === 'Internet'
+        ? 'Purchased Internet access'
+        : bill_type === 'Tv'
+        ? 'Cable Subscription'
+        : 'Electricity Purchase';
+
+    // records
+    await this.prismaService.transaction_history.create({
+      data: {
+        amount: amount,
+        transaction_type: 'debit',
+        beneficial_id: user.id,
+        sender_id: user.id,
+        sender_name: message,
+      },
+    });
+
+    return { status: true, message };
   }
 
   async transactionRecord() {

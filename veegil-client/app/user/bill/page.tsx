@@ -22,7 +22,7 @@ import React, { useEffect, useState } from "react";
 import { AiOutlineCheckCircle } from "react-icons/ai";
 
 const page = () => {
-  const [orgName, setOrgName] = useState("");
+  const [billType, setBillType] = useState("");
   const [amount, setAmount] = useState("");
   const [provider, setProvider] = useState("Select Provider");
   const [loading, setLoading] = useState(false);
@@ -37,26 +37,40 @@ const page = () => {
   const [reload, setReload] = useState(0);
 
   const [amountPlaceholder, setAmountPlaceholder] = useState<string>("Amount");
+
+  const [errMsg, setErrMsg] = useState("");
   const token = getCookie("_er3434");
 
-  const user = useStore((state) => state.user) as userProps;
+  const handleBillPayment = async () => {
+    if (+amount > balance) {
+      return setErrMsg(`Insufficient Fund. Please Credit Your account`);
+    }
 
-  const handleDonation = async () => {
     setLoading(true);
     try {
-      const token = getCookie("_er3434");
       axios.defaults.headers.common["Authorization"] = "Bearer " + token;
       axios.defaults.headers.get["Content-Type"] = "application/json";
 
-      const fields = {
-        amount,
-        provider,
-        organization: orgName,
-        UserCreditId,
+      type fieldType = {
+        amount: string;
+        provider: string;
+        bill_type: string;
+        user_credit_id: string;
+        tvPackage?: string;
       };
 
+      const fields: fieldType = {
+        amount,
+        provider,
+        bill_type: billType,
+        user_credit_id: UserCreditId,
+        tvPackage: tvPackage,
+      };
+
+      provider !== "DSTV" && provider !== "GOTV" && delete fields.tvPackage;
+
       const { data } = await axios.post(
-        `${BASE_URL}transaction/donate`,
+        `${BASE_URL}transaction/pay/bill`,
         fields
       );
       if (data) {
@@ -64,10 +78,16 @@ const page = () => {
         setSuccess(true);
         setAmount("");
         setProvider("");
-        setOrgName("");
+        setBillType("");
         setReload((prev) => prev + 1);
       }
-    } catch (err: any) {}
+    } catch (err: any) {
+      if (err.response) {
+        setErrMsg(err.response.data.message);
+      } else {
+        setErrMsg(err.message);
+      }
+    }
   };
 
   useEffect(() => {
@@ -84,30 +104,31 @@ const page = () => {
     })();
   }, [reload]);
 
-  // useEffect(() => {
-  //   tvPackage === "DSTV";
-  // }, [tvPackage]);
-
   const packageList = provider === "DSTV" ? DSTVPackage : gotvPackages;
 
   const disable =
-    amount === "" || orgName === "" || provider === "Select Provider"
+    Number(amount) > balance ||
+    amount === "" ||
+    billType === "" ||
+    provider === "Select Provider"
       ? true
       : false;
 
   const providerList =
-    orgName == "Tv"
+    billType == "Tv"
       ? TvProvider
-      : orgName == "Electricity"
+      : billType == "Electricity"
       ? ElectricityProvider
       : airtimeProvider;
 
   const itemPlaceholder =
-    orgName === "Air Time" || orgName === "Internet" ? "Phone No." : "Card No.";
+    billType === "Air Time" || billType === "Internet"
+      ? "Phone No."
+      : "Card No.";
 
   useEffect(() => {
     const returnPrice = () => {
-      if (tvPackage === "Subscription Type") return "Amount";
+      if (tvPackage === "Subscription Type") return "Amount"; //default
       const result = packageList.filter((x) => x.name == tvPackage)[0];
       return `${result.amount}`;
     };
@@ -130,8 +151,8 @@ const page = () => {
             {bills.map((org) => (
               <Bills
                 key={org.id}
-                setBilltype={setOrgName}
-                billType={orgName}
+                setBilltype={setBillType}
+                billType={billType}
                 org={org}
               />
             ))}
@@ -181,6 +202,8 @@ const page = () => {
           <p className="text-base  text-title  tracking-wide font-semibold">
             Balance : ₦{balance}
           </p>
+
+          {errMsg !== "" && <p className="text-red-600 my-3">{errMsg}</p>}
         </div>
       </div>
       <div className="flex justify-end mt-8">
@@ -188,7 +211,7 @@ const page = () => {
           <Button
             disable={disable}
             loading={loading}
-            onClick={handleDonation}
+            onClick={handleBillPayment}
             text={"Purchase"}
           />
         </div>
@@ -198,9 +221,9 @@ const page = () => {
           <div className="flex flex-col space-y-3 justify-center items-center">
             <AiOutlineCheckCircle className="text-green-600 text-5xl" />
 
-            <p className="text-lg font-semibold mt-2">Donation Successfull</p>
+            <p className="text-lg font-semibold mt-2">Payment Successful</p>
             <p className="text-sm text-center text-textColor mt-2">
-              You have completed your donation successfully."
+              You have successfully completed your transaction."
             </p>
           </div>
         </div>
