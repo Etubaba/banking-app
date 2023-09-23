@@ -18,6 +18,8 @@ module.exports = {
         orange: "#F24726",
         textcolor: "#55575F",
         orangehover: "#a12911",
+        adminbg: "#FBFBFF",
+        title: "#1E202B",
         dark: "#1B242F",
         lightdark: "#262F38",
       },

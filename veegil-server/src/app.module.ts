@@ -14,6 +14,8 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { APP_GUARD } from '@nestjs/core';
 import { RolesGuard } from './common/guard/roles.guard';
+import { CloudinaryModule } from './modules/cloudinary/cloudinary.module';
+
 
 @Module({
   imports: [
@@ -27,6 +29,7 @@ import { RolesGuard } from './common/guard/roles.guard';
     HttpModule,
     TransactionsModule,
     PaystackModule,
+    CloudinaryModule,
   ],
   controllers: [AppController],
   providers: [
@@ -36,6 +39,7 @@ import { RolesGuard } from './common/guard/roles.guard';
       provide: APP_GUARD,
       useClass: RolesGuard,
     },
+  
   ],
 })
 export class AppModule {}

@@ -1,10 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../../database/prisma/services/prisma.service';
 import { UpdateUserDto } from '../dto/updateuser.dto';
+import { CloudinaryService } from '../../cloudinary/cloudinary.service';
 
 @Injectable()
 export class UserService {
-  constructor(private readonly prismaService: PrismaService) {}
+  constructor(
+    private readonly prismaService: PrismaService,
+    private readonly cloudinaryService: CloudinaryService,
+  ) {}
 
   async userDetails(phone: string): Promise<object> {
     const user = await this.prismaService.user.findUnique({
@@ -23,13 +27,17 @@ export class UserService {
     return user;
   }
 
-  async updateUser(updateUserDto: UpdateUserDto, phone: string) {
-    const { avatar, email, full_name } = updateUserDto;
+  async updateUser(
+    file: Array<Express.Multer.File> | undefined,
+    updateUserDto: UpdateUserDto,
+    id: string,
+  ) {
+    const { email, full_name } = updateUserDto;
 
     //does user exist
     const user = await this.prismaService.user.findUnique({
       where: {
-        phone,
+        id,
       },
     });
 
@@ -39,18 +47,27 @@ export class UserService {
         message: 'User does not exists',
       };
 
-    await this.prismaService.user.update({
+    const cloudinaryResponse = await this.cloudinaryService.uploadSingleImage(
+      file,
+      'zeewallet',
+    );
+
+    const newUser = await this.prismaService.user.update({
       where: {
-        phone,
+        id,
       },
       data: {
-        avatar,
+        avatar: cloudinaryResponse.secure_url,
         email,
         full_name,
       },
     });
 
-    return { status: true, message: 'User updated successfuly' };
+    return {
+      status: true,
+      user: newUser,
+      message: 'User updated successfuly',
+    };
   }
 
   async deleteUser(id: string) {

@@ -14,7 +14,7 @@ const Button = ({
       type="submit"
       disabled={disable}
       onClick={onClick}
-      className={`text-center cursor-pointer text-sm px-3 text-white py-2 ${
+      className={`text-center cursor-pointer text-sm px-3 text-white py-1 ${
         disable ? "bg-orange/25" : "bg-orange  hover:bg-orangehover"
       }  ${type === "custom" ? "min-w-[50px]" : "w-full"} rounded-md `}
     >

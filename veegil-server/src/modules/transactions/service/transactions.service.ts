@@ -52,7 +52,7 @@ export class TransactionsService {
         amount: amount,
         transaction_type: 'debit',
         beneficial_id: user.id,
-        sender_name: 'Withdraw to bank account',
+        sender_name: 'Withdrew to bank account',
       },
     });
 
@@ -242,15 +242,15 @@ export class TransactionsService {
     };
   }
 
-  async donateFunds(donateDto: DonateDto, phone: string) {
-    const { amount: rawAmount, reason } = donateDto;
+  async donateFunds(donateDto: DonateDto, id: string) {
+    const { amount: rawAmount, reason, organization } = donateDto;
     //convert to positive int
     const amount = Math.abs(rawAmount);
 
     //does user exist
     const userGiver = await this.prismaService.user.findUnique({
       where: {
-        phone,
+        id,
       },
     });
 
@@ -273,10 +273,27 @@ export class TransactionsService {
 
     await this.prismaService.user.update({
       where: {
-        phone,
+        id,
       },
       data: {
         account_balance: userGiver.account_balance - amount,
+      },
+    });
+
+    //save donation money
+
+    const donations = await this.prismaService.user.findUnique({
+      where: {
+        id: '650ea5edb10f6ad48d97a3fc',
+      },
+    });
+
+    await this.prismaService.user.update({
+      where: {
+        id: '650ea5edb10f6ad48d97a3fc',
+      },
+      data: {
+        account_balance: donations.account_balance + amount,
       },
     });
 
@@ -287,13 +304,13 @@ export class TransactionsService {
         transaction_type: 'debit',
         beneficial_id: userGiver.id,
         sender_id: userGiver.id,
-        sender_name: reason,
+        sender_name: `Donated to ${organization}`,
       },
     });
 
     return {
       status: true,
-      message: `Donted ${amount} for ${reason} successfully.Thank you`,
+      message: `Donted ${amount} to ${organization}  successfully.Thank you`,
     };
   }
 
@@ -319,8 +336,15 @@ export class TransactionsService {
       0,
     );
 
+    const donations = await this.prismaService.user.findUnique({
+      where: {
+        id: '650ea5edb10f6ad48d97a3fc',
+      },
+    });
+
     return {
       status: true,
+      donations: donations.account_balance,
       total_users: users,
       total_transactions: transactions,
       amount_in_transaction: totalAmountInTransaction,

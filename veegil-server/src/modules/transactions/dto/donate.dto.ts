@@ -5,4 +5,6 @@ export class DonateDto {
   amount: number;
   @IsNotEmpty()
   reason: string;
+  @IsNotEmpty()
+  organization: string;
 }

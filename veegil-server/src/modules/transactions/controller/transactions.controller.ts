@@ -69,4 +69,11 @@ export class TransactionsController {
   async statistics() {
     return await this.transactionsService.statistics();
   }
+
+  @UseGuards(JwtGuard)
+  @Post('donate')
+  async donate(@Req() request, @Body() donateDto: DonateDto) {
+    const { id }: { phone: string; id: string } = request.user;
+    return await this.transactionsService.donateFunds(donateDto, id);
+  }
 }

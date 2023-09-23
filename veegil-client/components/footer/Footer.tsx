@@ -1,15 +1,24 @@
+"use client";
+
+import { usePathname } from "next/navigation";
 import { BsGithub, BsLinkedin, BsYoutube } from "react-icons/bs";
 
 const Footer = () => {
   const date = new Date();
   const year = date.getFullYear();
 
-  //   const checkPath = () => {
-  //     const userPaths = ["/user"];
-  //     return userPaths.includes(`${router.pathname}`);
-  //   };
+  const pathname = usePathname();
 
-  //   if (checkPath()) return null;
+  const checkPath = (): boolean => {
+    const userPaths = ["/user", "/admin"];
+    for (const path of userPaths) {
+      if (pathname.startsWith(path)) return true;
+    }
+
+    return false;
+  };
+
+  if (checkPath()) return null;
 
   return (
     <div className="w-full bg-dark h-auto p-10">

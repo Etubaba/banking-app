@@ -38,12 +38,13 @@ export type ModalProps = {
 };
 
 export type userProps = {
-  id: String;
-  full_name: String;
-  phone: String;
-  email: String;
-  account_balance: Number;
+  id: string;
+  full_name: string;
+  phone: string;
+  email: string;
+  account_balance: number;
   transaction_history: any;
+  avatar: string;
 };
 export type EmptyValueType = {
   name: String;
@@ -71,3 +72,30 @@ enum type {
   credit = "credit",
   debit = "debit",
 }
+
+export type InputProps = {
+  type?: string;
+  placeholder?: string;
+  style?: string;
+  value?: string;
+  onChange?: React.ChangeEventHandler<HTMLInputElement> | undefined;
+};
+
+export type BillProps = {
+  Icon: IconType;
+  id: number;
+  name: string;
+};
+
+type List = {
+  image: string;
+  name: string;
+};
+
+export type selectType = {
+  setValue: React.Dispatch<React.SetStateAction<string>>;
+  value: string;
+  list: List[];
+  // style?: string;
+  position?: string;
+};

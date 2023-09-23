@@ -40,4 +40,10 @@ export default () => ({
     paystack_verify_url: process.env.PAYSTACK_VERIFY_URL,
     Paystack_initialize_url: process.env.PAYSTACK_INITIALIZE_URL,
   },
+
+  cloudinary: {
+    api_secret: process.env.CLOUDINARY_API_SECRET,
+    name: process.env.CLOUDINARY_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+  },
 });
