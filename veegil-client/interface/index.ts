@@ -78,6 +78,7 @@ export type InputProps = {
   placeholder?: string;
   style?: string;
   value?: string;
+  disable?: boolean;
   onChange?: React.ChangeEventHandler<HTMLInputElement> | undefined;
 };
 

@@ -6,11 +6,13 @@ import Select from "@/components/common/Select";
 import { Bills } from "@/components/user/bill/Bills";
 import { BASE_URL } from "@/constant";
 import {
+  DSTVPackage,
   ElectricityProvider,
   TvProvider,
   airtimeProvider,
   bills,
   charityOrg,
+  gotvPackages,
 } from "@/constant/mock";
 import { userProps } from "@/interface";
 import { useStore } from "@/store";
@@ -28,11 +30,13 @@ const page = () => {
 
   const [UserCreditId, setUserCreditId] = useState(""); // this can be phone, dstv id code , and so on
 
-  const [tvPackage, setTvPackage] = useState(""); // for tv sub
+  const [tvPackage, setTvPackage] = useState("Subscription Type"); // for tv sub
 
   const [success, setSuccess] = useState(false);
 
   const [reload, setReload] = useState(0);
+
+  const [amountPlaceholder, setAmountPlaceholder] = useState<string>("Amount");
   const token = getCookie("_er3434");
 
   const user = useStore((state) => state.user) as userProps;
@@ -48,6 +52,7 @@ const page = () => {
         amount,
         provider,
         organization: orgName,
+        UserCreditId,
       };
 
       const { data } = await axios.post(
@@ -79,6 +84,12 @@ const page = () => {
     })();
   }, [reload]);
 
+  // useEffect(() => {
+  //   tvPackage === "DSTV";
+  // }, [tvPackage]);
+
+  const packageList = provider === "DSTV" ? DSTVPackage : gotvPackages;
+
   const disable =
     amount === "" || orgName === "" || provider === "Select Provider"
       ? true
@@ -91,7 +102,19 @@ const page = () => {
       ? ElectricityProvider
       : airtimeProvider;
 
-  const itemPlaceholder = orgName === "Air Time" ? "Phone No." : "Card No.";
+  const itemPlaceholder =
+    orgName === "Air Time" || orgName === "Internet" ? "Phone No." : "Card No.";
+
+  useEffect(() => {
+    const returnPrice = () => {
+      if (tvPackage === "Subscription Type") return "Amount";
+      const result = packageList.filter((x) => x.name == tvPackage)[0];
+      return `${result.amount}`;
+    };
+    setAmount(returnPrice());
+    setAmountPlaceholder(returnPrice());
+  }, [tvPackage]);
+
   return (
     <div>
       {" "}
@@ -121,11 +144,6 @@ const page = () => {
                 setValue={setProvider}
                 list={providerList}
               />
-              {/* <Input
-                value={reason}
-                onChange={(e) => setReason(e.target.value)}
-                placeholder={"Reason"}
-              /> */}
             </div>
             {provider !== "Select Provider" && (
               <div className=" col-span-2">
@@ -137,12 +155,25 @@ const page = () => {
               </div>
             )}
 
+            {(provider === "DSTV" || provider === "GOTV") && (
+              <div className=" col-span-2">
+                <Select
+                  value={tvPackage}
+                  setValue={setTvPackage}
+                  list={packageList}
+                />
+              </div>
+            )}
+
             <div className=" col-span-2">
               <Input
+                disable={
+                  provider === "DSTV" || provider === "GOTV" ? true : false
+                }
                 type="number"
                 value={amount}
                 onChange={(e) => setAmount(e.target.value)}
-                placeholder={"Amount"}
+                placeholder={amountPlaceholder}
               />
             </div>
           </div>
@@ -158,7 +189,7 @@ const page = () => {
             disable={disable}
             loading={loading}
             onClick={handleDonation}
-            text={"Donate"}
+            text={"Purchase"}
           />
         </div>
       </div>

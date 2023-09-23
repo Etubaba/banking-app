@@ -126,3 +126,64 @@ export const ElectricityProvider = [
     image: "/EEDCwebp.webp",
   },
 ];
+
+export const DSTVPackage = [
+  {
+    name: "DStv Padi",
+    image: "/dstv.jpg",
+    amount: 2150,
+  },
+  {
+    name: "DStv Yanga",
+    image: "/dstv.jpg",
+    amount: 3300,
+  },
+  {
+    name: "DStv Comfam",
+    image: "/dstv.jpg",
+    amount: 5500,
+  },
+  {
+    name: "DStv Compact",
+    image: "/dstv.jpg",
+    amount: 9100,
+  },
+  {
+    name: "DStv Compact Plus",
+    image: "/dstv.jpg",
+    amount: 14850,
+  },
+  {
+    name: "DStv Premium",
+    image: "/dstv.jpg",
+    amount: 21000,
+  },
+];
+
+export const gotvPackages = [
+  {
+    name: "GOTV Smallie",
+    image: "/gotv.png",
+    amount: 1100,
+  },
+  {
+    name: "GOTV Jinja",
+    image: "/gotv.png",
+    amount: 4850,
+  },
+  {
+    name: "GOTV Jolli",
+    image: "/gotv.png",
+    amount: 3300,
+  },
+  {
+    name: "GOTV Max",
+    image: "/gotv.png",
+    amount: 4850,
+  },
+  {
+    name: "GOTV Supa",
+    image: "/gotv.png",
+    amount: 6400,
+  },
+];

@@ -38,6 +38,10 @@ const Select = ({ setValue, value, list, position }: selectType) => {
         >
           {list.map((item, index) => (
             <div
+              onClick={() => {
+                setValue(item.name);
+                setOpen(false);
+              }}
               key={index}
               className="flex space-x-1 p-2  hover:bg-adminbg items-center"
             >
@@ -45,10 +49,6 @@ const Select = ({ setValue, value, list, position }: selectType) => {
                 <img alt="" src={item.image} className="w-4 h-4 " />
               </div>
               <p
-                onClick={() => {
-                  setValue(item.name);
-                  setOpen(false);
-                }}
                 key={index}
                 className="flex  text-textcolor text-sm rounded-md "
               >

@@ -3,7 +3,14 @@
 import { InputProps } from "@/interface";
 import React, { useState } from "react";
 
-const Input = ({ type, style, value, onChange, placeholder }: InputProps) => {
+const Input = ({
+  type,
+  style,
+  value,
+  onChange,
+  placeholder,
+  disable,
+}: InputProps) => {
   const [outline, setOutline] = useState(false);
   return (
     <div
@@ -12,6 +19,7 @@ const Input = ({ type, style, value, onChange, placeholder }: InputProps) => {
       }   `}
     >
       <input
+        disabled={disable}
         className={`placeholder:text-xs ${
           style !== undefined ? style : ""
         }  text-[13px] text-textcolor bg-transparent  w-full outline-none`}
