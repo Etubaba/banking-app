@@ -18,14 +18,12 @@ const Profile = () => {
 
   const setUserDetails = useStore((state) => state.authenticateUser);
   const [edit, setEdit] = useState(false);
-  const [profilepic, setProfilePic] = useState(
-    user?.avatar !== null ? user?.avatar : null
-  );
+  const [profilepic, setProfilePic] = useState(user?.avatar);
   const [blob, setBlob] = useState<any>(null);
 
-  const [full_name, setFull_name] = useState(user.full_name);
+  const [full_name, setFull_name] = useState(user?.full_name);
 
-  const [email, setEmail] = useState(user.email);
+  const [email, setEmail] = useState(user?.email);
   const [loading, setLoading] = useState(false);
 
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
@@ -56,7 +54,7 @@ const Profile = () => {
       formData.append("avatar", blob[0]);
 
       const { data } = await axios.patch(
-        `${BASE_URL}user/update/${user.id}`,
+        `${BASE_URL}user/update/${user?.id}`,
         formData
       );
 
@@ -135,7 +133,7 @@ const Profile = () => {
           </div>
 
           <div className="flex flex-col justify-center items-center md:justify-start md:items-start space-y-2">
-            <p className="text-title font-semibold">{user.full_name}</p>
+            <p className="text-title font-semibold">{user?.full_name}</p>
             <p className="text-textcolor text-xs md:text-sm"> User Account </p>
           </div>
         </div>
@@ -148,7 +146,7 @@ const Profile = () => {
             <input
               disabled={edit ? false : true}
               onChange={(e) => setFull_name(e.target.value)}
-              defaultValue={user.full_name}
+              defaultValue={user?.full_name}
               type={"text"}
               placeholder=" "
               className="border-[0.7px] text-textColor rounded-md focus:border-scudGreen  outline-0 w-full md:w-[75%] p-1 border-gray-300"
@@ -158,7 +156,7 @@ const Profile = () => {
             <label className="text-base text-textColor">Phone</label>
             <input
               disabled={true}
-              defaultValue={user.phone}
+              defaultValue={user?.phone}
               type={"text"}
               placeholder=" "
               className="border-[0.7px] text-textColor rounded-md focus:border-scudGreen  outline-0 w-full md:w-[75%] p-1 border-gray-300"
@@ -168,7 +166,7 @@ const Profile = () => {
             <label className="text-base text-textColor">Email</label>
             <input
               disabled={edit ? false : true}
-              defaultValue={user.email}
+              defaultValue={user?.email}
               onChange={(e) => setEmail(e.target.value)}
               type={"text"}
               placeholder=" "
