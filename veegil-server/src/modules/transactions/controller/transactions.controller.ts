@@ -47,12 +47,12 @@ export class TransactionsController {
     const { phone }: { phone: string; _: any } = request.user;
     return this.transactionsService.transferFunds(transferDto, phone);
   }
-  @UseGuards(JwtGuard)
-  @Post('transfer')
-  async donateFunds(@Req() request, @Body() donateDto: DonateDto) {
-    const { phone }: { phone: string; _: any } = request.user;
-    return this.transactionsService.donateFunds(donateDto, phone);
-  }
+  // @UseGuards(JwtGuard)
+  // @Post('donate')
+  // async donateFunds(@Req() request, @Body() donateDto: DonateDto) {
+  //   const { phone }: { phone: string; _: any } = request.user;
+  //   return this.transactionsService.donateFunds(donateDto, phone);
+  // }
 
   @Get('verify')
   async verifyPayment(@Res() res: Response, @Query() query) {

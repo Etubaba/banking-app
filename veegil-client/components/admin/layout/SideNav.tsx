@@ -46,12 +46,6 @@ const SideNav = ({ setShow, show }: SideNavType) => {
       text: "Transactions",
       href: "/admin/transactions",
     },
-    {
-      id: 4,
-      iconName: <BiDonateHeart />,
-      text: "Donations",
-      href: "/admin/donations",
-    },
   ];
   return (
     <div className="py-4 pl-4 h-full bg-primary dark:bg-darkbg  pr-4 relative md:static">

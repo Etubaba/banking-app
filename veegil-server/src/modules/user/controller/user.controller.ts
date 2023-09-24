@@ -29,9 +29,15 @@ export class UserController {
   }
 
   @UseGuards(JwtGuard)
-  @Roles(Role.ADMIN)
-  @Delete('deactivate')
-  async deleteUser(@Param() id: string) {
+  @Get('all')
+  async getAllUser() {
+    return await this.userService.getAllUsers();
+  }
+
+  @UseGuards(JwtGuard)
+  // @Roles(Role.ADMIN)
+  @Delete('deactivate/:id')
+  async deleteUser(@Param('id') id: string) {
     return await this.userService.deleteUser(id);
   }
 

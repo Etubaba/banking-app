@@ -21,6 +21,7 @@ export type bottonProps = {
   loading?: boolean;
   type?: string;
   disable?: boolean;
+  primary?: boolean;
 };
 
 export interface IModal {
@@ -45,7 +46,10 @@ export type userProps = {
   account_balance: number;
   transaction_history: any;
   avatar: string;
+  created_at?: string;
+  role: string[];
 };
+
 export type EmptyValueType = {
   name: String;
   title: String;
@@ -107,4 +111,9 @@ export type dasboardCompo = {
   value: string | number;
   color?: string;
   link?: string;
+};
+
+export type searchInputType = {
+  value: string;
+  onChange: React.ChangeEventHandler<HTMLInputElement> | undefined;
 };

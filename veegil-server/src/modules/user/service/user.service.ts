@@ -90,4 +90,10 @@ export class UserService {
     });
     return { status: false, message: 'User deactivated successfully' };
   }
+
+  async getAllUsers() {
+    const users = await this.prismaService.user.findMany({});
+
+    return { status: true, data: users };
+  }
 }

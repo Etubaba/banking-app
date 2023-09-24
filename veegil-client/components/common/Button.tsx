@@ -8,6 +8,7 @@ const Button = ({
   loading,
   disable,
   type,
+  primary,
 }: bottonProps): JSX.Element => {
   return (
     <button

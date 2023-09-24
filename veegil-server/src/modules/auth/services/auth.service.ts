@@ -77,7 +77,7 @@ export class AuthService {
 
     delete user.password;
 
-    return { user, accessToken, refreshToken };
+    return { user, message: 'User Created successfully' };
   }
 
   async login(loginDto: LoginDto): Promise<object> {

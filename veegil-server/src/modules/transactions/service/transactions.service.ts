@@ -385,7 +385,9 @@ export class TransactionsService {
   }
 
   async statistics() {
-    const users = await this.prismaService.user.count();
+    const allUsers = await this.prismaService.user.findMany({});
+
+    const userCount = allUsers.filter((u) => u.role.includes('user')).length;
 
     const transactions = await this.prismaService.transaction_history.count();
 
@@ -408,7 +410,7 @@ export class TransactionsService {
     return {
       status: true,
       donations: donations.account_balance,
-      total_users: users,
+      total_users: userCount,
       total_transactions: transactions,
       amount_in_transaction: totalAmountInTransaction,
     };

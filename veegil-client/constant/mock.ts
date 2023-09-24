@@ -195,3 +195,13 @@ export const transactionTableHead = [
   "Date",
   "Status",
 ];
+
+export const UserTableHead = [
+  "Avatar",
+  "Name",
+  "Phone",
+  "Email",
+  "Balance",
+  "Joined At",
+  "Action",
+];
