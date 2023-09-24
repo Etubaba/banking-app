@@ -1,64 +1,44 @@
-import DashboardView from "@/components/admin/DashboardView";
-import { BASE_URL } from "@/constant";
+"use client";
+
 import { transactionTableHead } from "@/constant/mock";
-import { fetchData } from "@/helper/fetchData";
 import { RecordType } from "@/interface";
-import Link from "next/link";
-import React from "react";
-import { AiOutlineDollarCircle } from "react-icons/ai";
-import { BiDonateHeart, BiTransfer } from "react-icons/bi";
-import { BsArrowRightShort, BsPeople } from "react-icons/bs";
+import React, { useState } from "react";
 
-const page = async () => {
-  const [stats, records] = await fetchData([
-    `${BASE_URL}transaction/stats`,
-    `${BASE_URL}transaction/records`,
-  ]);
-
-  const { data: transactionList } = records;
+const TransactionList = ({ record }: { record: RecordType[] }) => {
+  const [filterView, setFilterView] = useState("all");
   return (
     <div>
-      <p className="text-lg mt-10 text-title mb-6  tracking-wide font-semibold">
-        Dashboard
-      </p>
-      <div className="w-full flex md:flex-row flex-col space-y-5 md:space-y-0 md:space-x-4 mb-10">
-        <DashboardView
-          title="Amount In Transactions"
-          color="red"
-          value={`₦${stats.amount_in_transaction}`}
-          Icon={AiOutlineDollarCircle}
-        />
-        <DashboardView
-          title="Total Users"
-          color=""
-          value={stats?.total_users}
-          Icon={BsPeople}
-        />
-        <DashboardView
-          title="Total Transaction"
-          color="yellow"
-          value={stats?.total_transactions}
-          Icon={BiTransfer}
-        />
-        <DashboardView
-          title="Donations"
-          color="green"
-          value={`₦${stats.donations}`}
-          Icon={BiDonateHeart}
-        />
-      </div>
-      <div className="flex justify-between items-center mb-8">
-        <p className="text-textcolor md:mb-0 mb-3 dark:text-textwhite font-semibold">
-          Transaction Records
-        </p>
+      <div className="flex mb-8 md:flex-row flex-col  justify-start md:justify-between items-center">
+        <p className="text-title">Transaction List</p>
 
-        <Link href={"/admin/transactions"}>
-          <div className="flex space-x-1 hover:text-primary/40 text-primary items-center">
-            <p className=" cursor-pointer text-xs">View all</p>
-            <BsArrowRightShort className=" text-lg" />
-          </div>
-        </Link>
+        <div className="flex space-x-2 items-center">
+          <button
+            onClick={() => setFilterView("all")}
+            className={`border  ${
+              filterView === "all" ? "bg-black/30" : ""
+            } hover:bg-black/30 min-w-[100px] border-primary px-2 py-1 text-sm rounded-md text-center`}
+          >
+            All
+          </button>
+          <button
+            onClick={() => setFilterView("credit")}
+            className={`border  ${
+              filterView === "credit" ? "bg-black/30" : ""
+            } hover:bg-black/30 min-w-[100px] border-primary px-2 py-1 text-sm rounded-md text-center`}
+          >
+            Credit
+          </button>
+          <button
+            onClick={() => setFilterView("debit")}
+            className={`border  ${
+              filterView === "debit" ? "bg-black/30" : ""
+            } hover:bg-black/30 min-w-[100px] border-primary px-2 py-1 text-sm rounded-md text-center`}
+          >
+            Debit
+          </button>
+        </div>
       </div>
+
       <div className="relative border  flex flex-col justify-start items-start shadow-sm w-full rounded-lg h-4/5">
         <div className="relative w-full overflow-x-auto shadow-md sm:rounded-lg">
           <table className="w-full text-sm text-left text-gray-500 ">
@@ -72,13 +52,18 @@ const page = async () => {
               </tr>
             </thead>
             <tbody>
-              {transactionList
+              {record
+                .filter((record) => {
+                  if (filterView === "all") return record;
+                  else if (record.transaction_type.toLowerCase() == filterView)
+                    return record;
+                })
                 .sort((a: RecordType, b: RecordType) => {
                   const dateA = new Date(a.created_at).getTime(); // Convert to number
                   const dateB = new Date(b.created_at).getTime(); // Convert to number
                   return dateB - dateA; // Sort in descending order
                 })
-                .slice(0, 5)
+
                 .map((record: RecordType, idx: number) => (
                   <tr key={idx} className="bg-white border-b  ">
                     <th
@@ -111,4 +96,4 @@ const page = async () => {
   );
 };
 
-export default page;
+export default TransactionList;

@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import SideNavLink from "./SideNavLink";
 
-import { BiLogOut, BiTransfer } from "react-icons/bi";
+import { BiDonateHeart, BiLogOut, BiTransfer } from "react-icons/bi";
 
 import { BsPeople } from "react-icons/bs";
 import { useRouter, redirect } from "next/navigation";
@@ -10,6 +10,7 @@ import { SideNavType } from "@/interface";
 import { deleteCookie } from "cookies-next";
 import { useAuthStore, useStore } from "@/store";
 import { AiOutlineBarChart } from "react-icons/ai";
+import { MdOutlineDashboard } from "react-icons/md";
 
 const SideNav = ({ setShow, show }: SideNavType) => {
   const router = useRouter();
@@ -29,7 +30,7 @@ const SideNav = ({ setShow, show }: SideNavType) => {
   const sideNavList = [
     {
       id: 1,
-      iconName: <AiOutlineBarChart />,
+      iconName: <MdOutlineDashboard />,
       text: "Dashboard",
       href: "/admin",
     },
@@ -43,12 +44,18 @@ const SideNav = ({ setShow, show }: SideNavType) => {
       id: 3,
       iconName: <BiTransfer />,
       text: "Transactions",
-      href: "/user/donate",
+      href: "/admin/transactions",
+    },
+    {
+      id: 4,
+      iconName: <BiDonateHeart />,
+      text: "Donations",
+      href: "/admin/donations",
     },
   ];
   return (
-    <div className="py-4 pl-4 bg-primary dark:bg-darkbg  pr-4 relative md:static">
-      <div className="h-screen  ">
+    <div className="py-4 pl-4 h-full bg-primary dark:bg-darkbg  pr-4 relative md:static">
+      <div className="h-full  ">
         {sideNavList.map((sideNav, index) => (
           <SideNavLink
             iconName={sideNav.iconName}

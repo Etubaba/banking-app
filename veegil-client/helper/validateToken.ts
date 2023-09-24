@@ -31,9 +31,9 @@ export const validateToken = async (token: string) => {
 
       // redirect("/user");
     }
-    return { isValid: false };
+    return { isValid: false, role: "user" };
   } catch (err: any) {
     console.log("err", err.message);
-    return { isValid: false };
+    return { isValid: false, role: "user" };
   }
 };

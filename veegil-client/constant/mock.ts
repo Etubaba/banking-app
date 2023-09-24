@@ -187,3 +187,11 @@ export const gotvPackages = [
     amount: 6400,
   },
 ];
+
+export const transactionTableHead = [
+  "Transaction Type",
+  "Description",
+  "Amount (NGN)",
+  "Date",
+  "Status",
+];
