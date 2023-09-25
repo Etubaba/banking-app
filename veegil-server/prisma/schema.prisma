@@ -36,10 +36,9 @@ model transaction_history {
   beneficial       user     @relation(fields: [beneficial_id], references: [id])
   created_at       DateTime @default(now())
   updated_at       DateTime @updatedAt
-  sender_id        String?  @db.ObjectId
+  sender_id        String?
   sender_name      String?
   beneficial_id    String   @db.ObjectId
-  userId           String   @db.ObjectId
 }
 
 model transaction_reference {
