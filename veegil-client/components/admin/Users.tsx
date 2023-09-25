@@ -52,8 +52,8 @@ const Users = ({ users }: { users: userProps[] }) => {
 
   return (
     <div>
-      <div className="flex mb-8 md:flex-row flex-col  justify-start md:justify-between items-center">
-        <p className="text-title">User List</p>
+      <div className="flex mb-8 md:flex-row flex-col  justify-start md:justify-between md:items-center">
+        <p className="text-title mb-4 md:mb-0">User List</p>
 
         <div className="flex space-x-2 items-center">
           <SearchInput

@@ -378,10 +378,8 @@ export class TransactionsService {
   }
 
   async transactionRecord() {
-    const transactions = await this.prismaService.transaction_history.findMany(
-      {},
-    );
-    return { status: true, data: transactions };
+    const trans = await this.prismaService.transaction_history.findMany({}); //chdhd
+    return { status: true, data: trans };
   }
 
   async statistics() {

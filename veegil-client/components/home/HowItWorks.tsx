@@ -4,11 +4,11 @@ import DetailsComponent from "../common/DetailsComponent";
 
 const HowItWorks = (): JSX.Element => {
   return (
-    <div className="md:px-12 px-6 mt-8 py-8 md:py-10 ">
+    <div className="md:px-12 px-6 mt-8 py-8 md:py-14 ">
       <h2 className="font-bold text-center mb-4 text-lg md:text-3xl">
         How it works
       </h2>
-      <p className="text-center md:px-28 mb-10 text-sm md:text-base text-black/70">
+      <p className="text-center md:px-28 mb-12 text-sm md:text-base text-textcolor">
         It is a long established fact that a reader will be distracted by the
         readable content of a page when looking at its layout. reader will be
         distracted by the readable content of a page when looking at its layout.

@@ -48,7 +48,7 @@ const SideNav = ({ setShow, show }: SideNavType) => {
     },
   ];
   return (
-    <div className="py-4 pl-4 h-full bg-primary dark:bg-darkbg  pr-4 relative md:static">
+    <div className="py-4 pl-4 h-full bg-primary dark:bg-darkbg  pr-4  absolute md:static">
       <div className="h-full  ">
         {sideNavList.map((sideNav, index) => (
           <SideNavLink

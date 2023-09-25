@@ -2,7 +2,7 @@ import { detailsProps } from "../../interface";
 
 const DetailsComponent = ({ Icon, title, content, color }: detailsProps) => {
   return (
-    <div className="flex flex-col max-w-[300px] items-center bg-white drop-shadow-md p-3 md:p-4">
+    <div className="flex flex-col max-w-[300px] max-h-[300px] items-center bg-white border rounded-md  p-3 md:p-10">
       <span
         className={` p-2   ${
           color !== undefined ? color : "bg-primary"
@@ -10,8 +10,8 @@ const DetailsComponent = ({ Icon, title, content, color }: detailsProps) => {
       >
         <Icon className="text-white" />
       </span>
-      <p className="font-bold mb-2">{title}</p>
-      <p className="text-xs text-gray-400  text-center">{content}</p>
+      <p className="font-bold mb-2 text-title">{title}</p>
+      <p className="text-xs text-textcolor  text-center">{content}</p>
     </div>
   );
 };
