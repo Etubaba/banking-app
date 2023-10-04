@@ -25,12 +25,14 @@ export class AuthService {
   async generateNewToken(
     id: string,
     phone: string,
+    role: string[],
     type: 'access' | 'refresh',
   ): Promise<string> {
     const token = await this.jwtService.signAsync(
       {
         phone,
         sub: id,
+        role,
       },
       {
         secret: <string>configuration().jwt[type].secret,
@@ -70,10 +72,10 @@ export class AuthService {
     });
 
     //generate token
-    const [accessToken, refreshToken] = await Promise.all([
-      this.generateNewToken(user.id, user.phone, 'access'),
-      this.generateNewToken(user.id, user.phone, 'refresh'),
-    ]);
+    // const [accessToken, refreshToken] = await Promise.all([
+    //   this.generateNewToken(user.id, user.phone, 'access'),
+    //   this.generateNewToken(user.id, user.phone, 'refresh'),
+    // ]);
 
     delete user.password;
 
@@ -107,8 +109,8 @@ export class AuthService {
 
     //generate token
     const [accessToken, refreshToken] = await Promise.all([
-      this.generateNewToken(user.id, user.phone, 'access'),
-      this.generateNewToken(user.id, user.phone, 'refresh'),
+      this.generateNewToken(user.id, user.phone, user.role, 'access'),
+      this.generateNewToken(user.id, user.phone, user.role, 'refresh'),
     ]);
 
     //delete passord from user details
@@ -136,8 +138,8 @@ export class AuthService {
 
       //generate token
       const [accessToken, newRefreshToken] = await Promise.all([
-        this.generateNewToken(user.id, user.phone, 'access'),
-        this.generateNewToken(user.id, user.phone, 'refresh'),
+        this.generateNewToken(user.id, user.phone, user.role, 'access'),
+        this.generateNewToken(user.id, user.phone, user.role, 'refresh'),
       ]);
 
       //delete passord from user details

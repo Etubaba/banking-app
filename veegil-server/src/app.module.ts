@@ -15,7 +15,7 @@ import { join } from 'path';
 import { APP_GUARD } from '@nestjs/core';
 import { RolesGuard } from './common/guard/roles.guard';
 import { CloudinaryModule } from './modules/cloudinary/cloudinary.module';
-
+import { JwtService } from '@nestjs/jwt';
 
 @Module({
   imports: [
@@ -39,7 +39,7 @@ import { CloudinaryModule } from './modules/cloudinary/cloudinary.module';
       provide: APP_GUARD,
       useClass: RolesGuard,
     },
-  
+    JwtService,
   ],
 })
 export class AppModule {}

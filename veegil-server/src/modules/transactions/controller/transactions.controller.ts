@@ -16,6 +16,8 @@ import { Response, Request } from 'express';
 import { TransferDto } from '../dto/transferDto.dto';
 import { DonateDto } from '../dto/donate.dto';
 import { BillDto } from '../dto/billsDto';
+import { Roles } from '../../../common/decorators/roles.decorator';
+import { Role } from '../../../common/role.enum';
 
 @Controller('transaction')
 export class TransactionsController {
@@ -47,12 +49,6 @@ export class TransactionsController {
     const { phone }: { phone: string; _: any } = request.user;
     return this.transactionsService.transferFunds(transferDto, phone);
   }
-  // @UseGuards(JwtGuard)
-  // @Post('donate')
-  // async donateFunds(@Req() request, @Body() donateDto: DonateDto) {
-  //   const { phone }: { phone: string; _: any } = request.user;
-  //   return this.transactionsService.donateFunds(donateDto, phone);
-  // }
 
   @Get('verify')
   async verifyPayment(@Res() res: Response, @Query() query) {
@@ -60,12 +56,14 @@ export class TransactionsController {
   }
 
   @UseGuards(JwtGuard)
+  @Roles(Role.ADMIN)
   @Get('records')
   async transactionRecords() {
     return await this.transactionsService.transactionRecord();
   }
 
   @UseGuards(JwtGuard)
+  @Roles(Role.ADMIN)
   @Get('stats')
   async statistics() {
     return await this.transactionsService.statistics();

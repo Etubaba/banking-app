@@ -16,6 +16,7 @@ import { Roles } from 'src/common/decorators/roles.decorator';
 import { Role } from 'src/common/role.enum';
 import { UpdateUserDto } from '../dto/updateuser.dto';
 import { FilesInterceptor } from '@nestjs/platform-express';
+import { RolesGuard } from 'src/common/guard/roles.guard';
 
 @Controller('user')
 export class UserController {
@@ -29,13 +30,14 @@ export class UserController {
   }
 
   @UseGuards(JwtGuard)
+  @Roles(Role.ADMIN)
   @Get('all')
   async getAllUser() {
     return await this.userService.getAllUsers();
   }
 
   @UseGuards(JwtGuard)
-  // @Roles(Role.ADMIN)
+  @Roles(Role.ADMIN)
   @Delete('deactivate/:id')
   async deleteUser(@Param('id') id: string) {
     return await this.userService.deleteUser(id);
