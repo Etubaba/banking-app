@@ -12,11 +12,11 @@ import {
 } from '@nestjs/common';
 import { UserService } from '../service/user.service';
 import { JwtGuard } from '../../auth/guard/jwt.guard';
-import { Roles } from 'src/common/decorators/roles.decorator';
-import { Role } from 'src/common/role.enum';
+import { Roles } from '../../../common/decorators/roles.decorator';
+import { Role } from '../../../common/role.enum';
 import { UpdateUserDto } from '../dto/updateuser.dto';
 import { FilesInterceptor } from '@nestjs/platform-express';
-import { RolesGuard } from 'src/common/guard/roles.guard';
+// import { RolesGuard } from 'src/common/guard/roles.guard';
 
 @Controller('user')
 export class UserController {
